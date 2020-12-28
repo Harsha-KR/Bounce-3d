@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    SpawnManager _spawnner;
+    bool isDead;
     Rigidbody PlayerRb;
     [SerializeField]
     float RotationSpeed;
@@ -17,6 +19,8 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        _spawnner = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        isDead = false;
         m_EulerAngleVelocity = new Vector3(0, 0, RotationSpeed);
         PlayerRb = GetComponent<Rigidbody>();
     }
@@ -37,16 +41,18 @@ public class Player : MonoBehaviour
         float HorizontalInput = Input.GetAxis("Horizontal");
 
         if(Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.D))
-        {
-            PlayerRb.angularVelocity = Vector3.zero;
-
+        {            
             Vector3 newPosition = PlayerRb.position + (Vector3.right * HorizontalInput * MovementSpeed * Time.deltaTime);
 
             PlayerRb.MovePosition(newPosition);
 
             Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * -HorizontalInput );
             PlayerRb.MoveRotation(PlayerRb.rotation * deltaRotation);
-        }        
+        }
+        else
+        {
+            PlayerRb.angularVelocity = Vector3.zero;
+        }
     }
 
     private void Jump()
@@ -63,7 +69,38 @@ public class Player : MonoBehaviour
         {
             case "Collectable":
                 other.gameObject.GetComponent<MeshRenderer>().material = CollectableAfter;
+                other.gameObject.GetComponent<SphereCollider>().enabled = false;
+                //add +100 to score
                 break;
+            case "PowerUp":
+                Destroy(other.gameObject);
+                //add +1 to total lives
+                break;
+            case "Checkpoint":
+                
+                break;
+        
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        switch (collision.gameObject.tag)
+        {
+            case "Enemy":
+                DeathLogic();
+                break;
+        }
+    }
+
+    private void DeathLogic()
+    {
+        if (!isDead)
+        {
+            isDead = true;
+            Destroy(this.gameObject);
+            _spawnner.spawnner();
+            
         }
     }
 }
