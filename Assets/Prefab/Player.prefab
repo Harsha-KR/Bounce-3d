@@ -129,3 +129,4 @@ MonoBehaviour:
   MovementSpeed: 5
   JumpForce: 450
   CollectableAfter: {fileID: 2100000, guid: fa90ab5d59dc4c04da05344446764836, type: 2}
+  CheckpointSpawnner: {fileID: 7440523280040305148, guid: 08e69c0b77514e644ae8c29638ee017a, type: 3}

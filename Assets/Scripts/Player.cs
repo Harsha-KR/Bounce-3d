@@ -16,6 +16,9 @@ public class Player : MonoBehaviour
     Vector3 m_EulerAngleVelocity;
     [SerializeField]
     Material CollectableAfter;
+    [SerializeField]
+    GameObject CheckpointSpawnner;
+
 
     void Start()
     {
@@ -52,7 +55,7 @@ public class Player : MonoBehaviour
         else
         {
             PlayerRb.angularVelocity = Vector3.zero;
-            PlayerRb.MovePosition(Vector3.zero);
+            
         }
     }
 
@@ -78,7 +81,9 @@ public class Player : MonoBehaviour
                 //add +1 to total lives
                 break;
             case "Checkpoint":
-                
+                Vector3 _Position = other.gameObject.transform.position;
+                Destroy(other.gameObject);
+                Instantiate(CheckpointSpawnner, _Position, Quaternion.Euler(-90, 0, 0));
                 break;
         
         }
