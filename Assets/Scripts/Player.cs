@@ -40,18 +40,19 @@ public class Player : MonoBehaviour
     {
         float HorizontalInput = Input.GetAxis("Horizontal");
 
-        if(Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.D))
-        {            
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
             Vector3 newPosition = PlayerRb.position + (Vector3.right * HorizontalInput * MovementSpeed * Time.deltaTime);
 
             PlayerRb.MovePosition(newPosition);
 
-            Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * -HorizontalInput );
+            Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * -HorizontalInput);
             PlayerRb.MoveRotation(PlayerRb.rotation * deltaRotation);
         }
         else
         {
             PlayerRb.angularVelocity = Vector3.zero;
+            PlayerRb.MovePosition(Vector3.zero);
         }
     }
 
