@@ -18,10 +18,10 @@ public class Player : MonoBehaviour
     Material CollectableAfter;
     [SerializeField]
     GameObject CheckpointSpawnner;
-
+    
 
     void Start()
-    {
+    {        
         _spawnner = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         isDead = false;
         m_EulerAngleVelocity = new Vector3(0, 0, RotationSpeed);
@@ -72,21 +72,31 @@ public class Player : MonoBehaviour
         switch(other.gameObject.tag)
         {
             case "Collectable":
-                other.gameObject.GetComponent<MeshRenderer>().material = CollectableAfter;
-                other.gameObject.GetComponent<SphereCollider>().enabled = false;
-                //add +100 to score
+                Collected(other);
                 break;
             case "PowerUp":
-                Destroy(other.gameObject);
-                //add +1 to total lives
+                _spawnner.PowerUpCollected(other) ;
                 break;
             case "Checkpoint":
-                Vector3 _Position = other.gameObject.transform.position;
-                Destroy(other.gameObject);
-                Instantiate(CheckpointSpawnner, _Position, Quaternion.Euler(-90, 0, 0));
+                CollectCheckpointSpawnner(other);                
                 break;
-        
+
         }
+    }
+
+    private void Collected(Collider other)
+    {
+        other.gameObject.GetComponent<MeshRenderer>().material = CollectableAfter;
+        other.gameObject.GetComponent<SphereCollider>().enabled = false;
+        //add +100 to score
+    }
+
+    private void CollectCheckpointSpawnner(Collider other)
+    {       
+        Vector3 _Position = other.gameObject.transform.position;
+        Destroy(other.gameObject);
+        Instantiate(CheckpointSpawnner, _Position, Quaternion.Euler(-90, 0, 0));
+        _spawnner.UpdateSpawnPosition(_Position);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -105,8 +115,7 @@ public class Player : MonoBehaviour
         {
             isDead = true;
             Destroy(this.gameObject);
-            _spawnner.spawnner();
-            
+            _spawnner.spawnner();            
         }
     }
 }
