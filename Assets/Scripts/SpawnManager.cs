@@ -11,6 +11,18 @@ public class SpawnManager : MonoBehaviour
 
     Vector3 SpawnPosition;
 
+    private void OnEnable()
+    {
+        PlayerEventManager.Checkpoint += UpdateSpawnPosition;
+        PlayerEventManager.Dead += spawnner;
+        PlayerEventManager.Lives += LivesCollected;
+    }
+    private void OnDisable()
+    {
+        PlayerEventManager.Checkpoint -= UpdateSpawnPosition;
+        PlayerEventManager.Dead -= spawnner;
+        PlayerEventManager.Lives -= LivesCollected;
+    }
     private void Start()
     {
         lives = 4;
@@ -18,11 +30,12 @@ public class SpawnManager : MonoBehaviour
         Instantiate(Player, SpawnPosition,Quaternion.identity);
     }
 
-    public void UpdateSpawnPosition(Vector3 position)
+    private void UpdateSpawnPosition(Collider other)
     {
-        SpawnPosition = position;
+        SpawnPosition = other.transform.position;
+        
     }
-    public void spawnner()
+    private void spawnner()
     {
         lives--;
         if (lives > 0)
@@ -30,9 +43,13 @@ public class SpawnManager : MonoBehaviour
             Instantiate(Player, SpawnPosition, Quaternion.identity);
         }
     }
-    public void PowerUpCollected(Collider PowerUp)
+
+    //since this method has no other function than destroying the object, did not find any reason to create a seperate script. 
+    //If in future it has more functions then think about a seperate script. 
+
+    private void LivesCollected(Collider other)
     {
-        Destroy(PowerUp.gameObject);
+        Destroy(other.gameObject);
         lives++;
     }
 }
