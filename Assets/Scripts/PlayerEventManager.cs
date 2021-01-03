@@ -8,13 +8,23 @@ public class PlayerEventManager : MonoBehaviour
     public static event CollectedCollectable Collectable;
     public static event CollectedCollectable Lives;
     public static event CollectedCollectable Checkpoint;
-    bool isDead;
+    
+    public delegate void CollisionEvents();
+    public static event CollisionEvents Dead;
+    public static event CollisionEvents LevelFinished;
 
-    public delegate void PlayerDied();
-    public static event PlayerDied Dead;
+    bool _isDead;
+    public bool IsDead
+    {
+        get
+        {
+            return _isDead;
+        }
+    }
+
     private void Start()
     {
-        isDead = false;
+        _isDead = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -40,14 +50,17 @@ public class PlayerEventManager : MonoBehaviour
             case "Enemy":
                 DeathLogic();
                 break;
+            case "Finish":
+                LevelFinished?.Invoke();
+                break;
         }
     }
 
     private void DeathLogic()
     {
-        if (!isDead)
+        if (!_isDead)
         {
-            isDead = true;
+            _isDead = true;
             Destroy(this.gameObject);
             Dead?.Invoke();          
         }

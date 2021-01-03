@@ -9,6 +9,14 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     int lives;
 
+    public int Lives
+    {
+        get
+        {
+            return lives;
+        }
+    }
+
     Vector3 SpawnPosition;
 
     private void OnEnable()
@@ -27,7 +35,7 @@ public class SpawnManager : MonoBehaviour
     {
         lives = 4;
         SpawnPosition = this.gameObject.transform.position;
-        Instantiate(Player, SpawnPosition,Quaternion.identity);
+        Instantiate(Player, SpawnPosition,Quaternion.identity);       
     }
 
     private void UpdateSpawnPosition(Collider other)
@@ -40,16 +48,17 @@ public class SpawnManager : MonoBehaviour
         lives--;
         if (lives > 0)
         {
-            Instantiate(Player, SpawnPosition, Quaternion.identity);
+            Instantiate(Player, SpawnPosition, Quaternion.identity);            
         }
     }
 
     //since this method has no other function than destroying the object, did not find any reason to create a seperate script. 
-    //If in future it has more functions then think about a seperate script. 
+    //If in future it has more functions, then think about a seperate script. 
 
     private void LivesCollected(Collider other)
     {
         Destroy(other.gameObject);
         lives++;
+        
     }
 }
