@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8621977868861539813}
   - component: {fileID: 6297947716378745175}
   - component: {fileID: -8249806123672172272}
+  - component: {fileID: 7552478806945650237}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -128,5 +129,15 @@ MonoBehaviour:
   RotationSpeed: 20
   MovementSpeed: 5
   JumpForce: 450
-  CollectableAfter: {fileID: 2100000, guid: fa90ab5d59dc4c04da05344446764836, type: 2}
-  CheckpointSpawnner: {fileID: 7440523280040305148, guid: 08e69c0b77514e644ae8c29638ee017a, type: 3}
+--- !u!114 &7552478806945650237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8371037965339668096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 787fe2224dcd1a24d88a813316c7f499, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
