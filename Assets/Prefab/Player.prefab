@@ -129,6 +129,7 @@ MonoBehaviour:
   RotationSpeed: 20
   MovementSpeed: 5
   JumpForce: 450
+  isOnSlope: 0
 --- !u!114 &7552478806945650237
 MonoBehaviour:
   m_ObjectHideFlags: 0
