@@ -12,6 +12,8 @@ public class PlayerEventManager : MonoBehaviour
     public delegate void CollisionEvents();
     public static event CollisionEvents Dead;
     public static event CollisionEvents LevelFinished;
+    public static event CollisionEvents PumpInTouched;
+    public static event CollisionEvents PumpOutTouched;
 
     bool _isDead;
     public bool IsDead
@@ -52,6 +54,12 @@ public class PlayerEventManager : MonoBehaviour
                 break;
             case "Finish":
                 LevelFinished?.Invoke();
+                break;
+            case "PumpIn":
+                PumpInTouched?.Invoke();
+                break;
+            case "PumpOut":
+                PumpOutTouched?.Invoke();
                 break;
         }
     }

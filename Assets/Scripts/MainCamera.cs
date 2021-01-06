@@ -25,6 +25,6 @@ public class MainCamera : MonoBehaviour
                 vCam.Follow = Player.transform;
             }
         }
-    }
+        
 
 }

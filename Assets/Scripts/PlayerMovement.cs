@@ -15,9 +15,25 @@ public class PlayerMovement : MonoBehaviour
     bool isMoving;
     [SerializeField]
     bool isOnSlope;
-        
+    [SerializeField]
+    Vector3 BoostedScale;
+    Animator _animation;
+
+    private void OnEnable()
+    {
+        PlayerEventManager.PumpInTouched += PumpIn;
+        PlayerEventManager.PumpOutTouched += PumpOut;
+    }
+
+    private void OnDisable()
+    {
+        PlayerEventManager.PumpInTouched -= PumpIn;
+        PlayerEventManager.PumpOutTouched -= PumpOut;
+    }
+
     void Start()
     {
+        _animation = this.gameObject.GetComponent<Animator>();
         isOnSlope = false;
         m_EulerAngleVelocity = new Vector3(0, 0, RotationSpeed);
         PlayerRb = GetComponent<Rigidbody>();
@@ -65,7 +81,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             PlayerRb.angularVelocity = Vector3.zero;
-            
         }
          
         if(!isOnSlope)
@@ -95,5 +110,14 @@ public class PlayerMovement : MonoBehaviour
         {
             isOnSlope = false;
         }
+    }
+
+    private void PumpIn()
+    {
+        _animation.SetBool("isPumped", true);
+    }
+    private void PumpOut()
+    {
+        _animation.SetBool("isPumped", false);
     }
 }
