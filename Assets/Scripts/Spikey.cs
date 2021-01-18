@@ -19,7 +19,6 @@ public class Spikey : MonoBehaviour
 
     private void Update()
     {
-        
         transform.position = Vector3.Lerp(pos1, pos2, (Mathf.Sin(speed * Time.time) + 1.0f) / 2.0f);
     }
 }

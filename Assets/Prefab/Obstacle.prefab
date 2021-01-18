@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5159799846659488443}
   - component: {fileID: 6953485078757379697}
   - component: {fileID: -151062104712712524}
+  - component: {fileID: -4830286703070209143}
   m_Layer: 0
   m_Name: Obstacle
   m_TagString: Enemy
@@ -95,3 +96,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.35, y: 1.1, z: 0.3}
   m_Center: {x: 0, y: -0.05, z: 0}
+--- !u!114 &-4830286703070209143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8898903572897312676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68fb371a036f9a1489edc9df8faf4ca2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

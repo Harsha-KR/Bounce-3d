@@ -4,61 +4,59 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    public delegate void LivesUpdateEvent(int m_Lives);
+    public static event LivesUpdateEvent UpdateLives;
+    
     [SerializeField]
     GameObject Player;
     [SerializeField]
-    int lives;
-
-    public int Lives
-    {
-        get
-        {
-            return lives;
-        }
-    }
+    Checkpoint GetNewSpawnPosition;
+    
+    int _Lives;
 
     Vector3 SpawnPosition;
 
     private void OnEnable()
     {
-        PlayerEventManager.Checkpoint += UpdateSpawnPosition;
-        PlayerEventManager.Dead += spawnner;
-        PlayerEventManager.Lives += LivesCollected;
+        Lives.LivesCollected += LivesCollected;
+        Checkpoint.NewSpawnPosition += UpdateSpawnPosition;
+        Enemy.EnemyContact += Spawnner;
     }
     private void OnDisable()
     {
-        PlayerEventManager.Checkpoint -= UpdateSpawnPosition;
-        PlayerEventManager.Dead -= spawnner;
-        PlayerEventManager.Lives -= LivesCollected;
-    }
-    private void Start()
-    {
-        lives = 4;
-        SpawnPosition = this.gameObject.transform.position;
-        Instantiate(Player, SpawnPosition,Quaternion.identity);       
+        Lives.LivesCollected -= LivesCollected;
+        Checkpoint.NewSpawnPosition -= UpdateSpawnPosition;
+        Enemy.EnemyContact -= Spawnner; 
     }
 
-    private void UpdateSpawnPosition(Collider other)
+    private void Start()
     {
-        SpawnPosition = other.transform.position;
+        _Lives = 4;
+        UpdateLives?.Invoke(_Lives);
+        SpawnPosition = this.gameObject.transform.position;
+        Spawnner();    
         
     }
-    private void spawnner()
+
+    private void UpdateSpawnPosition(Vector3 NewSpawnPosition)
     {
-        lives--;
-        if (lives > 0)
+        SpawnPosition = NewSpawnPosition;
+    }
+
+    private void LivesCollected()
+    {
+        _Lives++;
+        UpdateLives?.Invoke(_Lives);
+    }
+
+    private void Spawnner()
+    {
+        if (_Lives > 0)
         {
-            Instantiate(Player, SpawnPosition, Quaternion.identity);            
+            Instantiate(Player, SpawnPosition, Quaternion.identity);
+            _Lives--;
+            UpdateLives?.Invoke(_Lives);
         }
     }
 
-    //since this method has no other function than destroying the object, did not find any reason to create a seperate script. 
-    //If in future it has more functions, then think about a seperate script. 
-
-    private void LivesCollected(Collider other)
-    {
-        Destroy(other.gameObject);
-        lives++;
-        
-    }
 }

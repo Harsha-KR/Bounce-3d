@@ -6,37 +6,20 @@ public class PlayerMovement : MonoBehaviour
 {        
     Rigidbody PlayerRb;
     [SerializeField]
-    float RotationSpeed;
-    [SerializeField]
     float MovementSpeed;
     [SerializeField]
     float JumpForce;
-    Vector3 m_EulerAngleVelocity;
-    bool isMoving;
     [SerializeField]
     bool isOnSlope;
-    [SerializeField]
-    Vector3 BoostedScale;
     Animator _animation;
-
-    private void OnEnable()
-    {
-        PlayerEventManager.PumpInTouched += PumpIn;
-        PlayerEventManager.PumpOutTouched += PumpOut;
-    }
-
-    private void OnDisable()
-    {
-        PlayerEventManager.PumpInTouched -= PumpIn;
-        PlayerEventManager.PumpOutTouched -= PumpOut;
-    }
+    [SerializeField]
+    float MaxVelocity;    
 
     void Start()
     {
         _animation = this.gameObject.GetComponent<Animator>();
         isOnSlope = false;
-        m_EulerAngleVelocity = new Vector3(0, 0, RotationSpeed);
-        PlayerRb = GetComponent<Rigidbody>();
+        PlayerRb = this.GetComponent<Rigidbody>();
     }
 
     void FixedUpdate()
@@ -53,47 +36,51 @@ public class PlayerMovement : MonoBehaviour
     private void Movement()
     {
         float HorizontalInput = Input.GetAxis("Horizontal");
-        isMoving = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D);
 
-        if (isMoving && !isOnSlope)
+        if (Input.GetKey(KeyCode.D) && !isOnSlope)
         {
-            Vector3 newPosition = PlayerRb.position + (Vector3.right * HorizontalInput * MovementSpeed * Time.deltaTime);
-
-            PlayerRb.MovePosition(newPosition);
-
-            Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * -HorizontalInput);
-            PlayerRb.MoveRotation(PlayerRb.rotation * deltaRotation);
+            if (PlayerRb.velocity.x < MaxVelocity)
+            {
+                Vector3 _MovementVector = Vector3.right * HorizontalInput * MovementSpeed;
+                PlayerRb.AddForce(_MovementVector, ForceMode.Acceleration);
+            }
         }
-        else if(isMoving && isOnSlope)
+        else if (Input.GetKey(KeyCode.A) && !isOnSlope)
         {
-            Physics.gravity = Vector3.zero;
-                       
-            
-            Vector3 test = new Vector3(HorizontalInput, 1, 0);
-            
-            Vector3 newPosition = PlayerRb.position + (test * MovementSpeed * Time.deltaTime);
-
-            PlayerRb.MovePosition(newPosition);
-
-            Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * -HorizontalInput);
-            PlayerRb.MoveRotation(PlayerRb.rotation * deltaRotation);
+            if (PlayerRb.velocity.x > -MaxVelocity)
+            {
+                Vector3 _MovementVector = Vector3.right * HorizontalInput * MovementSpeed;
+                PlayerRb.AddForce(_MovementVector, ForceMode.Acceleration);
+            }    
+        }
+        else if (Input.GetKey(KeyCode.D) && isOnSlope)
+        {
+            if (PlayerRb.velocity.x < MaxVelocity/2 && PlayerRb.velocity.y < MaxVelocity/2)
+            {
+                Vector3 _MovementVector = new Vector3( HorizontalInput * MovementSpeed, HorizontalInput * MovementSpeed, 0);
+                PlayerRb.AddForce(_MovementVector, ForceMode.Acceleration);
+            }
+        }
+        else if (Input.GetKey(KeyCode.A) && isOnSlope)
+        {
+            if (PlayerRb.velocity.x > -MaxVelocity / 2 && PlayerRb.velocity.y < MaxVelocity / 2)
+            {
+                Vector3 _MovementForce = new Vector3(HorizontalInput * MovementSpeed, -HorizontalInput * MovementSpeed, 0);
+                PlayerRb.AddForce(_MovementForce, ForceMode.Acceleration);
+            }
         }
         else
         {
             PlayerRb.angularVelocity = Vector3.zero;
         }
-         
-        if(!isOnSlope)
-        {
-            Physics.gravity = new Vector3(0, -9.81f, 0);
-        }
     }
 
     private void Jump()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {            
-            PlayerRb.AddForce(Vector3.up * JumpForce, ForceMode.Force);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            
+            PlayerRb.AddForce(Vector3.up * JumpForce, ForceMode.Acceleration);
         }
     }
 

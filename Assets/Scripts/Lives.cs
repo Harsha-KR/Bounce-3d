@@ -6,24 +6,21 @@ using TMPro;
 
 public class Lives : MonoBehaviour
 {
-    [SerializeField]
-    private TextMeshProUGUI _Text;
-    private SpawnManager _Lives;
+    public delegate void TriggerEvents();
+    public static event TriggerEvents LivesCollected;
 
-    private void Start()
+    private void _LivesCollected()
     {
-        _Lives = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
-        LivesUIUpdate();
+        LivesCollected?.Invoke();
+        Destroy(this.gameObject);
     }
 
-    private void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        LivesUIUpdate();
-    }
-    public void LivesUIUpdate()
-    {
-        Debug.Log("Lives Updated in the UI");
-        _Text.text = "Lives: " + _Lives.Lives.ToString() ;
+        if (other.gameObject.CompareTag("Player"))
+        {
+            _LivesCollected();
+        }
     }
 
 

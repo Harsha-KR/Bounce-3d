@@ -4,20 +4,26 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
+    public delegate void TriggerEvent(Vector3 SpawnPosition);
+    public static event TriggerEvent NewSpawnPosition;
+
     [SerializeField]
     GameObject CheckpointSpawnner;
-    private void OnEnable()
+
+    Vector3 _newSpawnPosition;
+
+    
+    private void OnTriggerEnter(Collider other)
     {
-        PlayerEventManager.Checkpoint += CheckpointCollected;
+        if (other.gameObject.CompareTag("Player"))
+            CheckpointCollected();
     }
-    private void OnDisable()
+    
+    private void CheckpointCollected()
     {
-        PlayerEventManager.Checkpoint -= CheckpointCollected;
-    }
-    private void CheckpointCollected(Collider Same)
-    {
-        Vector3 _Position = Same.gameObject.transform.position;
-        Destroy(Same.gameObject);
-        Instantiate(CheckpointSpawnner, _Position, Quaternion.Euler(-90, 0, 0));
+            _newSpawnPosition = this.gameObject.transform.position;
+            Destroy(this.gameObject);
+            Instantiate(CheckpointSpawnner, _newSpawnPosition, Quaternion.Euler(-90, 0, 0));
+            NewSpawnPosition?.Invoke(_newSpawnPosition);
     }
 }

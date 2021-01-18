@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3919984713568025277}
   - component: {fileID: -2230671566056331873}
   - component: {fileID: -9200712226492400063}
+  - component: {fileID: 5977660730679435800}
   m_Layer: 0
   m_Name: Spikey
   m_TagString: Enemy
@@ -108,6 +109,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbc6a8d76f2a414583acdfe7c075e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
   pos1: {x: 0, y: 0, z: 0}
   pos2: {x: 0, y: 0, z: 0}
+--- !u!114 &5977660730679435800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3271417781857377128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68fb371a036f9a1489edc9df8faf4ca2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

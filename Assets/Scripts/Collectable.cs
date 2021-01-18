@@ -4,21 +4,26 @@ using UnityEngine;
 
 public class Collectable : MonoBehaviour
 {
+    public delegate void CollectedCollectable(int _Points);
+    public static event CollectedCollectable UpdateScoreUI;
+
     [SerializeField]
     Material CollectableAfter;
-    private void OnEnable()
+    int Points = 500;
+
+    private void OnTriggerEnter(Collider other)
     {
-        PlayerEventManager.Collectable += Collected;
-    }
-    private void OnDisable()
-    {
-        PlayerEventManager.Collectable -= Collected;   
+        if (other.gameObject.CompareTag("Player"))            
+            Collected();            
     }
 
-    private void Collected(Collider other)
+    private void Collected()
     {
-        other.gameObject.GetComponent<MeshRenderer>().material = CollectableAfter;
-        other.gameObject.GetComponent<SphereCollider>().enabled = false;
+        UpdateScoreUI?.Invoke(Points);
+        this.gameObject.GetComponent<SphereCollider>().enabled = false;
+        this.gameObject.GetComponent<MeshRenderer>().material = CollectableAfter;
+
         //add +100 to score
     }
+
 }
