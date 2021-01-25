@@ -13,11 +13,15 @@ public class PlayerMovement : MonoBehaviour
     bool isOnSlope;
     Animator _animation;
     [SerializeField]
-    float MaxVelocity;    
+    float MaxVelocity;
+
+    [SerializeField]
+    bool isPumped;
 
     void Start()
     {
         _animation = this.gameObject.GetComponent<Animator>();
+        isPumped = false;
         isOnSlope = false;
         PlayerRb = this.GetComponent<Rigidbody>();
     }
@@ -99,12 +103,24 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "PumpIn")
+        {
+            PumpIn();
+        }
+    }
+
     private void PumpIn()
     {
-        _animation.SetBool("isPumped", true);
-    }
-    private void PumpOut()
-    {
-        _animation.SetBool("isPumped", false);
+
+        if (!isPumped)
+        {
+            _animation.Play("PlayerPumpIn");
+            isPumped = true;
+            
+        }
     }
 }
