@@ -15,6 +15,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     float MaxVelocity;
 
+    float InitialJumpVelocity;
+    [SerializeField]
+    float InitialJumpHeight;
+    [SerializeField]
+    float GravityStrength;
+
+    float StandardJumpVelocity;
+    [SerializeField]
+    float StandardJumpHeight;
+
+
     [SerializeField]
     bool isPumped;
 
@@ -24,6 +35,9 @@ public class PlayerMovement : MonoBehaviour
         isPumped = false;
         isOnSlope = false;
         PlayerRb = this.GetComponent<Rigidbody>();
+
+        InitialJumpVelocity = Mathf.Sqrt(2 * GravityStrength * InitialJumpHeight);
+        StandardJumpVelocity = Mathf.Sqrt(2 * GravityStrength * StandardJumpHeight);
     }
 
     void FixedUpdate()
@@ -81,10 +95,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) )
         {
-            
-            PlayerRb.AddForce(Vector3.up * JumpForce, ForceMode.Acceleration);
+            float XVelocity = PlayerRb.velocity.x / 2;
+            Vector3 VelocityVector = new Vector3(XVelocity, InitialJumpVelocity, 0);
+
+            PlayerRb.AddForce(VelocityVector, ForceMode.VelocityChange);
+        }
+        if( Input.GetKeyUp(KeyCode.Space) && PlayerRb.velocity.y > StandardJumpVelocity )
+        {
+            float XVelocity = PlayerRb.velocity.x;
+            Vector3 VelocityVector = new Vector3(XVelocity, StandardJumpVelocity, 0);
+
+            PlayerRb.velocity =  Vector3.up * StandardJumpVelocity;
         }
     }
 

@@ -5,26 +5,26 @@ using UnityEngine.SceneManagement;
 
 public class GameStateManager : MonoBehaviour
 {
-    /*private void OnEnable()
-    {
-        PlayerEventManager.LevelFinished += LoadNextLevel;
-    }
-    private void OnDisable()
-    {
-        PlayerEventManager.LevelFinished -= LoadNextLevel;
-    }*/
+
     public void MainMenu()
     {
         SceneManager.LoadScene(0);
     }
-
-    public void RestartGame()
+    public void LoadLevel(int level)
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(level);
     }
-    public void LoadNextLevel()
+    public void LoadNext()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+    public void LoadPrevious()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void QuitGame()

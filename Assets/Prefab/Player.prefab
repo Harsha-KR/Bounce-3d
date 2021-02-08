@@ -127,10 +127,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cd8d897652c75241b0ea67adbfb2220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementSpeed: 20
+  MovementSpeed: 10
   JumpForce: 475
   isOnSlope: 0
   MaxVelocity: 6.5
+  InitialJumpHeight: 4.15
+  GravityStrength: 9.81
+  StandardJumpHeight: 1.5
   isPumped: 0
 --- !u!95 &1329621060
 Animator:

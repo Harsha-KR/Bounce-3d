@@ -58,5 +58,10 @@ public class SpawnManager : MonoBehaviour
             UpdateLives?.Invoke(_Lives);
         }
     }
+    public void Test()
+    {
+        _Lives++;
+        UpdateLives?.Invoke(_Lives);
+    }
 
 }
