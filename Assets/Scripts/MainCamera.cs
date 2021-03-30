@@ -5,7 +5,6 @@ using Cinemachine;
 
 public class MainCamera : MonoBehaviour
 {
-    [SerializeField]
     GameObject Player;
     CinemachineVirtualCamera vCam;
 

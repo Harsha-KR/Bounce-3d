@@ -2,66 +2,57 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnManager : MonoBehaviour
+namespace Bounce3D
 {
-    public delegate void LivesUpdateEvent(int m_Lives);
-    public static event LivesUpdateEvent UpdateLives;
-    
-    [SerializeField]
-    GameObject Player;
-    [SerializeField]
-    Checkpoint GetNewSpawnPosition;
-    
-    int _Lives;
-
-    Vector3 SpawnPosition;
-
-    private void OnEnable()
+    public class SpawnManager : MonoBehaviour
     {
-        Lives.LivesCollected += LivesCollected;
-        Checkpoint.NewSpawnPosition += UpdateSpawnPosition;
-        Enemy.EnemyContact += Spawnner;
-    }
-    private void OnDisable()
-    {
-        Lives.LivesCollected -= LivesCollected;
-        Checkpoint.NewSpawnPosition -= UpdateSpawnPosition;
-        Enemy.EnemyContact -= Spawnner; 
-    }
+        [SerializeField]
+        GameObject Player;
+        [SerializeField]
+        Checkpoint GetNewSpawnPosition;
+        [SerializeField]
+        GameObject UI;
+        UIManager UIUpdater;
 
-    private void Start()
-    {
-        _Lives = 4;
-        UpdateLives?.Invoke(_Lives);
-        SpawnPosition = this.gameObject.transform.position;
-        Spawnner();    
-        
-    }
+        [SerializeField]
+        int _Lives;
 
-    private void UpdateSpawnPosition(Vector3 NewSpawnPosition)
-    {
-        SpawnPosition = NewSpawnPosition;
-    }
+        Vector3 SpawnPosition;
 
-    private void LivesCollected()
-    {
-        _Lives++;
-        UpdateLives?.Invoke(_Lives);
-    }
+        private void Awake()
+        {            
+            SpawnPosition = this.gameObject.transform.position;
+            UIUpdater = UI.GetComponent<UIManager>();
 
-    private void Spawnner()
-    {
-        if (_Lives > 0)
-        {
-            Instantiate(Player, SpawnPosition, Quaternion.identity);
-            _Lives--;
-            UpdateLives?.Invoke(_Lives);
         }
-    }
-    public void Test()
-    {
-        _Lives++;
-        UpdateLives?.Invoke(_Lives);
-    }
+        private void Start()
+        {
+            _Lives = 4;
+            Spawnner();
+        }
 
+        public void LivesCollected()
+        {
+            _Lives++;
+        }
+        public void LivesLost()
+        {
+            _Lives--;
+            Spawnner();
+        }
+
+        private void Spawnner()
+        {
+            if (_Lives > 0)
+            {
+                Instantiate(Player, SpawnPosition, Quaternion.identity);
+            }
+        }
+
+        public void UpdateSpawnPosition(Collider other)
+        {
+            SpawnPosition = other.transform.position;
+        }
+
+    }
 }

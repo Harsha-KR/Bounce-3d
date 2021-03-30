@@ -44,3 +44,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 8371037965339668096, guid: 3e3c1b240b9831049a0cbd341c017018, type: 3}
+  GetNewSpawnPosition: {fileID: 0}
+  UI: {fileID: 8806319683913820146, guid: 785a533dd4eb2ff4abd47c0f4a06eb3a, type: 3}
+  _Lives: 0

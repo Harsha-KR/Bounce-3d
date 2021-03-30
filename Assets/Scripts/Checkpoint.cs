@@ -3,27 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
-{
-    public delegate void TriggerEvent(Vector3 SpawnPosition);
-    public static event TriggerEvent NewSpawnPosition;
+{   [SerializeField]
+    GameObject spawnManager;
+       
 
     [SerializeField]
     GameObject CheckpointSpawnner;
-
-    Vector3 _newSpawnPosition;
 
     
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
-            CheckpointCollected();
+            CheckpointCollected(other);
     }
     
-    private void CheckpointCollected()
-    {
-            _newSpawnPosition = this.gameObject.transform.position;
-            Destroy(this.gameObject);
-            Instantiate(CheckpointSpawnner, _newSpawnPosition, Quaternion.Euler(-90, 0, 0));
-            NewSpawnPosition?.Invoke(_newSpawnPosition);
+    private void CheckpointCollected(Collider other)
+    {        
+       
+        Destroy(this.gameObject);
+        Instantiate(CheckpointSpawnner, this.transform.position, Quaternion.Euler(-90, 0, 0));
     }
 }

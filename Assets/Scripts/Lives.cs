@@ -4,24 +4,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class Lives : MonoBehaviour
+namespace Bounce3D
 {
-    public delegate void TriggerEvents();
-    public static event TriggerEvents LivesCollected;
-
-    private void _LivesCollected()
+    public class Lives : MonoBehaviour
     {
-        LivesCollected?.Invoke();
-        Destroy(this.gameObject);
-    }
+        [SerializeField]
+        GameObject SpawnManagerRef;
+        SpawnManager spawnManager;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
+        private void Awake()
         {
-            _LivesCollected();
+            spawnManager = SpawnManagerRef.GetComponent<SpawnManager>();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("Player"))
+            {
+                spawnManager.LivesCollected();
+                Destroy(this.gameObject);                
+            }
         }
     }
-
-
 }

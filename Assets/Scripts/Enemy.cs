@@ -2,14 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+namespace Bounce3D
 {
-    public delegate void CollisionEvent();
-    public static event CollisionEvent EnemyContact;
-
-    private void OnCollisionEnter(Collision collision)
+    public class Enemy : MonoBehaviour
     {
-        if (collision.gameObject.CompareTag("Player"))
-            EnemyContact?.Invoke();
+        [SerializeField]
+        GameObject SpawnManagerRef;
+        SpawnManager spawnManager;
+
+        private void Awake()
+        {
+            spawnManager = SpawnManagerRef.GetComponent<SpawnManager>();
+        }
+
+        private void DeathLogic(Collision other)
+        {                           
+                Destroy(other.gameObject);
+                other.gameObject.GetComponent<Collider>().enabled = false;
+            spawnManager.LivesLost();
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                DeathLogic(collision);
+            }
+        }
     }
 }
