@@ -14,7 +14,7 @@ public class MainCamera : MonoBehaviour
         vCam = GetComponentInChildren<CinemachineVirtualCamera>();        
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (Player == null)
         {
