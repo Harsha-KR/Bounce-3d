@@ -31,6 +31,11 @@ public class SpawnManager : MonoBehaviour
         PlayerEventManager.Dead -= spawnner;
         PlayerEventManager.Lives -= LivesCollected;
     }
+
+    private void Awake()
+    {
+        Application.targetFrameRate = 70;
+    }
     private void Start()
     {
         lives = 4;

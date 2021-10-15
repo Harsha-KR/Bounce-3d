@@ -11,93 +11,67 @@ public class PlayerMovement : MonoBehaviour
     float MovementSpeed;
     [SerializeField]
     float JumpForce;
-    Vector3 m_EulerAngleVelocity;
-    bool isMoving;
-    [SerializeField]
-    bool isOnSlope;
     [SerializeField]
     Vector3 BoostedScale;
-    Animator _animation;
 
-    private void OnEnable()
-    {
-        PlayerEventManager.PumpInTouched += PumpIn;
-        PlayerEventManager.PumpOutTouched += PumpOut;
-    }
-
-    private void OnDisable()
-    {
-        PlayerEventManager.PumpInTouched -= PumpIn;
-        PlayerEventManager.PumpOutTouched -= PumpOut;
-    }
+    float horizontalInput;
+    bool isJumping;
+    float jumpStartTime;
 
     void Start()
     {
-        _animation = this.gameObject.GetComponent<Animator>();
-        isOnSlope = false;
-        m_EulerAngleVelocity = new Vector3(0, 0, RotationSpeed);
         PlayerRb = GetComponent<Rigidbody>();
     }
 
     void FixedUpdate()
     {
         Movement();
-        
+        Jump();
     }
 
     private void Update()
     {
-        Jump();
+        horizontalInput = Input.GetAxis("Horizontal");
+        JumpInput();
+    }
+
+    private void JumpInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isJumping = true;
+            jumpStartTime = Time.time;
+        }
+        else if ((Time.time - jumpStartTime) > 0.2f && isJumping)
+        {
+            isJumping = false;
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            isJumping = false;
+            if ((Time.time - jumpStartTime) < 0.2f)
+            {
+                PlayerRb.velocity = new Vector3(PlayerRb.velocity.x, 6.5f, 0);
+            }
+        }
     }
 
     private void Movement()
     {
-        float HorizontalInput = Input.GetAxis("Horizontal");
-        isMoving = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D);
 
-        if (isMoving && !isOnSlope)
-        {
-            Vector3 newPosition = PlayerRb.position + (Vector3.right * HorizontalInput * MovementSpeed * Time.deltaTime);
+            PlayerRb.velocity = new Vector3(horizontalInput * MovementSpeed, PlayerRb.velocity.y, 0);
 
-            PlayerRb.MovePosition(newPosition);
-
-            Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * -HorizontalInput);
-            PlayerRb.MoveRotation(PlayerRb.rotation * deltaRotation);
-        }
-        else if(isMoving && isOnSlope)
-        {
-            Physics.gravity = Vector3.zero;
-                       
-            
-            Vector3 test = new Vector3(HorizontalInput, 1, 0);
-            
-            Vector3 newPosition = PlayerRb.position + (test * MovementSpeed * Time.deltaTime);
-
-            PlayerRb.MovePosition(newPosition);
-
-            Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * -HorizontalInput);
-            PlayerRb.MoveRotation(PlayerRb.rotation * deltaRotation);
-        }
-        else
-        {
-            PlayerRb.angularVelocity = Vector3.zero;
-        }
-         
-        if(!isOnSlope)
-        {
-            Physics.gravity = new Vector3(0, -9.81f, 0);
-        }
     }
 
     private void Jump()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {            
-            PlayerRb.AddForce(Vector3.up * JumpForce, ForceMode.Force);
+        if(isJumping)
+        {
+            PlayerRb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
         }
     }
 
-    private void OnCollisionStay(Collision collision)
+    /*private void OnCollisionStay(Collision collision)
     {
         if(collision.gameObject.tag == "Slope")
         {
@@ -119,5 +93,5 @@ public class PlayerMovement : MonoBehaviour
     private void PumpOut()
     {
         _animation.SetBool("isPumped", false);
-    }
+    }*/
 }

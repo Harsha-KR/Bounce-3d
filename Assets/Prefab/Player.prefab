@@ -129,7 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RotationSpeed: 20
   MovementSpeed: 5
-  JumpForce: 450
+  JumpForce: 1
   isOnSlope: 0
   BoostedScale: {x: 1.5, y: 1.5, z: 1.5}
 --- !u!114 &7552478806945650237

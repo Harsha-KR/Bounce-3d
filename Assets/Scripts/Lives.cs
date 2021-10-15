@@ -22,7 +22,7 @@ public class Lives : MonoBehaviour
     }
     public void LivesUIUpdate()
     {
-        Debug.Log("Lives Updated in the UI");
+        //Debug.Log("Lives Updated in the UI");
         _Text.text = "Lives: " + _Lives.Lives.ToString() ;
     }
 
