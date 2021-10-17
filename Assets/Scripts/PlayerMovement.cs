@@ -72,13 +72,4 @@ public class PlayerMovement : MonoBehaviour
             PlayerRb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
         }
     }
-
-    /*private void PumpIn()
-    {
-        _animation.SetBool("isPumped", true);
-    }
-    private void PumpOut()
-    {
-        _animation.SetBool("isPumped", false);
-    }*/
 }

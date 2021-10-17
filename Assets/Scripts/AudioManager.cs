@@ -17,7 +17,6 @@ public class AudioManager : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
+        DontDestroyOnLoad(gameObject);
     }
-
-    public AudioClip[] audioClips;
 }

@@ -8,7 +8,9 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     GameObject Player;
     [SerializeField]
-    int lives;
+    public int lives;
+
+    public int score;
 
     Vector3 SpawnPosition;
 
@@ -25,6 +27,8 @@ public class SpawnManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
         Application.targetFrameRate = 70;
+
+        score = 000;
     }
     private void Start()
     {
@@ -57,9 +61,14 @@ public class SpawnManager : MonoBehaviour
         lives++;        
     }
 
-    public IEnumerator RestartGame()
+    public IEnumerator StartGameRoutine()
     {
         yield return new WaitForSeconds(1f);
         StartGame();
+    }
+
+    public void test()
+    {
+        StartCoroutine(StartGameRoutine());
     }
 }

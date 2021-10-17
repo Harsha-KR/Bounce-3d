@@ -9,8 +9,8 @@ public class Collectable : MonoBehaviour
 
     public void Collected()
     {
+        SpawnManager._Instance.score += 100;
         this.gameObject.GetComponent<MeshRenderer>().material = CollectableAfter;
-        this.gameObject.GetComponent<SphereCollider>().enabled = false;
-        //add score
+        this.gameObject.GetComponent<SphereCollider>().enabled = false;        
     }
 }

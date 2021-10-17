@@ -12,7 +12,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void RestartGame()
     {
-        SpawnManager._Instance.StartCoroutine("RestartGame");
+        SpawnManager._Instance.StartCoroutine("StartGameRoutine");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);        
         Time.timeScale = 1f;
     }
@@ -37,5 +37,5 @@ public class MainMenuManager : MonoBehaviour
         Debug.Log("Quit");
         Application.Quit();
     }
-    
+
 }
