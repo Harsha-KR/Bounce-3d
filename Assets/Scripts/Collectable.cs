@@ -6,19 +6,11 @@ public class Collectable : MonoBehaviour
 {
     [SerializeField]
     Material CollectableAfter;
-    private void OnEnable()
-    {
-        PlayerEventManager.Collectable += Collected;
-    }
-    private void OnDisable()
-    {
-        PlayerEventManager.Collectable -= Collected;   
-    }
 
-    private void Collected(Collider other)
+    public void Collected()
     {
-        other.gameObject.GetComponent<MeshRenderer>().material = CollectableAfter;
-        other.gameObject.GetComponent<SphereCollider>().enabled = false;
-        //add +100 to score
+        this.gameObject.GetComponent<MeshRenderer>().material = CollectableAfter;
+        this.gameObject.GetComponent<SphereCollider>().enabled = false;
+        //add score
     }
 }

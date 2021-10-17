@@ -12,6 +12,7 @@ TagManager:
   - Slope
   - PumpIn
   - PumpOut
+  - SpawnManager
   layers:
   - Default
   - TransparentFX

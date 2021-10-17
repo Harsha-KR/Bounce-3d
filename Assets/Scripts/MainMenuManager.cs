@@ -3,16 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameStateManager : MonoBehaviour
+public class MainMenuManager : MonoBehaviour
 {
-    private void OnEnable()
-    {
-        PlayerEventManager.LevelFinished += LoadNextLevel;
-    }
-    private void OnDisable()
-    {
-        PlayerEventManager.LevelFinished -= LoadNextLevel;
-    }
     public void MainMenu()
     {
         SceneManager.LoadScene(0);
@@ -20,11 +12,24 @@ public class GameStateManager : MonoBehaviour
 
     public void RestartGame()
     {
-        SceneManager.LoadScene(1);
+        SpawnManager._Instance.StartCoroutine("RestartGame");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);        
+        Time.timeScale = 1f;
     }
+
     public void LoadNextLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
     }
 
     public void QuitGame()

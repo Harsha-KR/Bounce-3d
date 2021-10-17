@@ -1,54 +1,49 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    public static SpawnManager _Instance;
+
     [SerializeField]
     GameObject Player;
     [SerializeField]
     int lives;
 
-    public int Lives
-    {
-        get
-        {
-            return lives;
-        }
-    }
-
     Vector3 SpawnPosition;
-
-    private void OnEnable()
-    {
-        PlayerEventManager.Checkpoint += UpdateSpawnPosition;
-        PlayerEventManager.Dead += spawnner;
-        PlayerEventManager.Lives += LivesCollected;
-    }
-    private void OnDisable()
-    {
-        PlayerEventManager.Checkpoint -= UpdateSpawnPosition;
-        PlayerEventManager.Dead -= spawnner;
-        PlayerEventManager.Lives -= LivesCollected;
-    }
 
     private void Awake()
     {
+        if(_Instance == null)
+        {
+            _Instance = this;
+        }
+        else 
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
         Application.targetFrameRate = 70;
     }
     private void Start()
     {
-        lives = 4;
-        SpawnPosition = this.gameObject.transform.position;
-        Instantiate(Player, SpawnPosition,Quaternion.identity);       
+        StartGame();
     }
 
-    private void UpdateSpawnPosition(Collider other)
+    public void StartGame()
+    {
+        lives = 4;
+        SpawnPosition = this.gameObject.transform.position;
+        Instantiate(Player, SpawnPosition, Quaternion.identity);
+    }
+
+    public void UpdateSpawnPosition(Collider other)
     {
         SpawnPosition = other.transform.position;
         
     }
-    private void spawnner()
+    public void spawnner()
     {
         lives--;
         if (lives > 0)
@@ -56,14 +51,15 @@ public class SpawnManager : MonoBehaviour
             Instantiate(Player, SpawnPosition, Quaternion.identity);            
         }
     }
-
-    //since this method has no other function than destroying the object, did not find any reason to create a seperate script. 
-    //If in future it has more functions, then think about a seperate script. 
-
-    private void LivesCollected(Collider other)
+    public void LivesCollected(Collider other)
     {
         Destroy(other.gameObject);
-        lives++;
-        
+        lives++;        
+    }
+
+    public IEnumerator RestartGame()
+    {
+        yield return new WaitForSeconds(1f);
+        StartGame();
     }
 }

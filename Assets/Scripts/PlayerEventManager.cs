@@ -4,16 +4,7 @@ using UnityEngine;
 
 public class PlayerEventManager : MonoBehaviour
 {
-    public delegate void CollectedCollectable(Collider any);
-    public static event CollectedCollectable Collectable;
-    public static event CollectedCollectable Lives;
-    public static event CollectedCollectable Checkpoint;
-    
-    public delegate void CollisionEvents();
-    public static event CollisionEvents Dead;
-    public static event CollisionEvents LevelFinished;
-    public static event CollisionEvents PumpInTouched;
-    public static event CollisionEvents PumpOutTouched;
+    SpawnManager _spawnManager;
 
     bool _isDead;
     public bool IsDead
@@ -26,6 +17,7 @@ public class PlayerEventManager : MonoBehaviour
 
     private void Start()
     {
+        _spawnManager = GameObject.FindObjectOfType<SpawnManager>().GetComponent<SpawnManager>();
         _isDead = false;
     }
 
@@ -34,13 +26,14 @@ public class PlayerEventManager : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Collectable":
-                Collectable?.Invoke(other);
+                other.gameObject.GetComponent<Collectable>().Collected();
                 break;
             case "Lives":
-                Lives?.Invoke(other);
+                _spawnManager.LivesCollected(other);
                 break;
             case "Checkpoint":
-                Checkpoint?.Invoke(other);
+                other.GetComponent<Checkpoint>().CheckpointCollected(other);
+                _spawnManager.UpdateSpawnPosition(other);
                 break;
 
         }
@@ -53,13 +46,13 @@ public class PlayerEventManager : MonoBehaviour
                 DeathLogic();
                 break;
             case "Finish":
-                LevelFinished?.Invoke();
+                
                 break;
             case "PumpIn":
-                PumpInTouched?.Invoke();
+                
                 break;
             case "PumpOut":
-                PumpOutTouched?.Invoke();
+                
                 break;
         }
     }
@@ -70,7 +63,7 @@ public class PlayerEventManager : MonoBehaviour
         {
             _isDead = true;
             Destroy(this.gameObject);
-            Dead?.Invoke();          
+            _spawnManager.spawnner();
         }
     }
 }

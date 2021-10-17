@@ -6,15 +6,8 @@ public class Checkpoint : MonoBehaviour
 {
     [SerializeField]
     GameObject CheckpointSpawnner;
-    private void OnEnable()
-    {
-        PlayerEventManager.Checkpoint += CheckpointCollected;
-    }
-    private void OnDisable()
-    {
-        PlayerEventManager.Checkpoint -= CheckpointCollected;
-    }
-    private void CheckpointCollected(Collider Same)
+   
+    public void CheckpointCollected(Collider Same)
     {
         Vector3 _Position = Same.gameObject.transform.position;
         Destroy(Same.gameObject);

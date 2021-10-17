@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class PlayerMovement : MonoBehaviour
 {        
     Rigidbody PlayerRb;
-    [SerializeField]
-    float RotationSpeed;
+    AudioSource playerSFX;
     [SerializeField]
     float MovementSpeed;
     [SerializeField]
@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         PlayerRb = GetComponent<Rigidbody>();
+        playerSFX = GetComponent<AudioSource>();
     }
 
     void FixedUpdate()
@@ -39,8 +40,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            playerSFX.Play();
             isJumping = true;
-            jumpStartTime = Time.time;
+            jumpStartTime = Time.time;            
         }
         else if ((Time.time - jumpStartTime) > 0.2f && isJumping)
         {
@@ -71,22 +73,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    /*private void OnCollisionStay(Collision collision)
-    {
-        if(collision.gameObject.tag == "Slope")
-        {
-            isOnSlope = true;
-        }
-    }
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "Slope")
-        {
-            isOnSlope = false;
-        }
-    }
-
-    private void PumpIn()
+    /*private void PumpIn()
     {
         _animation.SetBool("isPumped", true);
     }
