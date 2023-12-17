@@ -11,8 +11,6 @@ public class PlayerMovement : MonoBehaviour
     float MovementSpeed;
     [SerializeField]
     float JumpForce;
-    [SerializeField]
-    Vector3 BoostedScale;
 
     float horizontalInput;
     bool isJumping;

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerEventManager : MonoBehaviour
 {
@@ -49,16 +48,12 @@ public class PlayerEventManager : MonoBehaviour
             case "Enemy":
                 DeathLogic();
                 break;
-            case "Finish":
-                SpawnManager._Instance.StartCoroutine("StartGameRoutine");
-                SpawnManager._Instance.score = 0;
-                SceneManager.LoadScene( SceneManager.GetActiveScene().buildIndex + 1);                
-                break;
             case "PumpIn":
                 PumpIn();
                 break;
             case "PumpOut":
                 PumpOut();
+                Debug.Log("Test");
                 break;
         }
     }
@@ -87,7 +82,7 @@ public class PlayerEventManager : MonoBehaviour
         {
             _isDead = true;
             Destroy(this.gameObject);
-            _spawnManager.spawnner();
+            _spawnManager.Spawnner();
         }
     }
 }
