@@ -28,8 +28,6 @@ public class SpawnManager : MonoBehaviour
             return;
         }
 
-        Application.targetFrameRate = 70;
-
         score = 000;
         myMainCamera = FindObjectOfType<MyMainCamera>();
     }
@@ -66,9 +64,9 @@ public class SpawnManager : MonoBehaviour
         lives++;        
     }
 
-    public IEnumerator StartGameRoutinef()
+    public IEnumerator StartGameRoutine()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForEndOfFrame();
         StartGame();
     }
 }

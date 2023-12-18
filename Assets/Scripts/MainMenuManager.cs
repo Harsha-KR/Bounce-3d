@@ -7,6 +7,7 @@ public class MainMenuManager : MonoBehaviour
 {
     public void MainMenu()
     {
+        ResumeGame();
         SceneManager.LoadScene(0);
     }
 
